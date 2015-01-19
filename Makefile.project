@@ -1,0 +1,21 @@
+CC?=gcc
+CCFLAGS?=-Wall -Werror -g -DCOMPAT_RENAME -I../compat 
+LDFLAGS?=
+OUTPUT?=$(notdir $(patsubst %/,%,$(dir $(abspath $(firstword $(MAKEFILE_LIST))))))
+LAYER?=layer_a
+SOURCES?=$(wildcard *.c)
+
+all: $(OUTPUT)
+
+$(OUTPUT): $(SOURCES:.c=.o) ../$(LAYER)/$(LAYER).a
+	$(CC) -o $@ $^ $(LDFLAGS)
+
+%.o: %.c
+	$(CC) $(CCFLAGS) -c -o $@ $<
+	
+../$(LAYER)/$(LAYER).a: ../$(LAYER)
+	$(MAKE) -C ../$(LAYER)
+	
+clean:
+	rm -f $(OUTPUT) $(SOURCES:.c=.o)
+	$(MAKE) -C ../$(LAYER) clean
