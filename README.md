@@ -1,2 +1,8 @@
 # compat-layer-test
 Simple scheme for developing a cross-platform C app on top of a compatibility layer for each platform
+
+The framework consists of 3 components: compatibility layer headers (in the `compat` directory), compatibility layer implementations (example given in `layer_a`), and applications (example given in `proj1`). Any system-specific code should be abstracted under the compatibility layer, e.g. the `c_print_int` function wraps around `printf` in the given `layer_a` compatibility layer. On platforms that do not support `printf`, a different compatibility layer may be used which implements `c_print_int` in a different way.
+
+The compatibility layer implementations use the `c_` prefix for function names in order to not conflict with similarly named functions on the underlying platform. However, the headers in `compat` provide macros to allow this prefix to be omitted when compiling an application. Thus, `print_int` is used instead of `c_print_int` in the `proj1` source files.
+
+The Makefile in the `proj1` application directory provides an example of how to specify which compatibility implementation will be used, and how to specify the name of the output executable. The defaults are given in `Makefile.project`, which is included from the application Makefile. The default compatibility implementation is `layer_a`, and the default application executable name is the same as the name of its parent directory.
