@@ -1,0 +1,15 @@
+CC?=gcc
+CCFLAGS?=-Wall -Werror -g -I..
+LDFLAGS?=
+
+SOURCES?=$(wildcard *.c)
+OBJECTS?=$(SOURCES:.c=.o)
+
+$(LAYER).a: $(OBJECTS)
+	ar cr $(LAYER).a $(OBJECTS)
+
+%.o: %.c
+	$(CC) $(CCFLAGS) -c -o $@ $<
+	
+clean:
+	rm -f $(OBJECTS) $(LAYER).a
